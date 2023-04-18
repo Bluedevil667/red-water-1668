@@ -10,3 +10,10 @@
 <% @dish.ingredients.each do |ingredient| %>
   <p><%= ingredient.name %></p>
 <% end %>
+
+<p>Add Ingredient to this dish:</p>
+<%= form_with url: dish_ingredients_path(@dish) do |form| %>
+  <%= form.label :ingredient_id, "Ingredient ID"%>
+  <%= form.text_field :ingredient_id %>
+  <%= form.submit %>
+<% end %>

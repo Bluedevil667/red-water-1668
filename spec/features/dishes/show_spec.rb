@@ -7,6 +7,7 @@ RSpec.describe 'Dish Show Page' do
     @ingredient_1 = Ingredient.create!(name: "Ingredient 1", calories: 100)
     @ingredient_2 = Ingredient.create!(name: "Ingredient 2", calories: 200)
     @ingredient_3 = Ingredient.create!(name: "Ingredient 3", calories: 300)
+    @ingredient_4 = Ingredient.create!(name: "Ingredient 4", calories: 400)
     DishIngredient.create!(dish: @dish_1, ingredient: @ingredient_1)
     DishIngredient.create!(dish: @dish_1, ingredient: @ingredient_2)
     DishIngredient.create!(dish: @dish_1, ingredient: @ingredient_3)
@@ -37,5 +38,19 @@ RSpec.describe 'Dish Show Page' do
     visit dish_path(@dish_1)
 
     expect(page).to have_content(@dish_1.total_calories)
+  end
+
+  it 'has a form to add an ingredient' do
+    visit dish_path(@dish_1)
+
+    expect(page).to have_content("Add Ingredient")
+    expect(page).to have_field(:ingredient_id)
+    expect(page).to have_button("Save")
+    
+    fill_in :ingredient_id, with: @ingredient_4.id
+    click_button "Save"
+    
+    expect(current_path).to eq(dish_path(@dish_1))
+    expect(page).to have_content(@ingredient_4.name)
   end
 end
